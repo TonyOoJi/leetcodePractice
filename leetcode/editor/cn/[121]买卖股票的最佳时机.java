@@ -31,13 +31,12 @@ class Solution {
         int minPri = prices[0];
         int profits = 0;
         for (int i = 1,len = prices.length; i < len; i++) {
-            if (minPri > prices[i-1]) {
+            if (minPri > prices[i-1]) { //当前最小价格判断
                 minPri = prices[i-1];
             }
-            if (prices[i] - minPri > profits) {
+            if (prices[i] - minPri > profits) { //当前差价 和 当前最大对比 并替换
                 profits = prices[i] - minPri;
             }
-
         }
         return profits;
     }
