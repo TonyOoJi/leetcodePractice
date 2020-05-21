@@ -23,7 +23,14 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int rob(int[] nums) {
-        
+        int a = 0,b = 0;
+        for (int i = 0; i < nums.length; i+=2) {
+            a += nums[i];
+            if (i + 1 < nums.length) {
+                b += nums[i+1];
+            }
+        }
+        return Math.max(a,b);
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
