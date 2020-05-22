@@ -27,7 +27,27 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int lengthOfLongestSubstring(String s) {
+        int begin = 0, end = 0, len = s.length(), max = 1, maxT = 1;
+        if (len == 0) {
+            return 0;
+        }
+        while (end < len - 1) {
+            String window = s.substring(begin, end + 1);
+            int contain = window.indexOf(s.charAt(end + 1));
+            if (contain < 0) {
+                end ++;
+                maxT ++;
+            } else {
+                begin =begin + contain + 1;
+                end ++;
+                maxT = end - begin + 1;
+            }
+            if (maxT > max) {
+                max = maxT;
+            }
 
+        }
+        return max;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

@@ -89,25 +89,31 @@ public class Solution {
     }
 
     public int lengthOfLongestSubstring(String s) {
-        int begin = 0, end = 1, len = s.length(), max = 1, maxT = 1;
-        String window = s.substring(begin, end);
+        int begin = 0, end = 0, len = s.length(), max = 1, maxT = 1;
+        if (len == 0) {
+            return 0;
+        }
         while (end < len - 1) {
+            String window = s.substring(begin, end + 1);
             int contain = window.indexOf(s.charAt(end + 1));
             if (contain < 0) {
                 end ++;
                 maxT ++;
             } else {
-                begin = contain;
+                begin =begin + contain + 1;
                 end ++;
-                maxT = end - begin;
+                maxT = end - begin + 1;
             }
-            max = maxT > max ? maxT : max;
+            if (maxT > max) {
+                max = maxT;
+            }
+
         }
         return max;
     }
 
     public static void main(String[] args) {
-        System.out.println(new Solution().lengthOfLongestSubstring("asdfcssa"));
+        System.out.println(new Solution().lengthOfLongestSubstring("abcabcbb"));
     }
 
 }
