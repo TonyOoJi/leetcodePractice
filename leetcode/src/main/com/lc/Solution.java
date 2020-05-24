@@ -24,7 +24,7 @@ import java.util.List;
 public class Solution {
 
     /**
-     * 打家劫舍
+     * 198 打家劫舍
      *
      * @param nums
      * @return
@@ -40,6 +40,11 @@ public class Solution {
         return Math.max(a, b);
     }
 
+    /**
+     * 22 括号生成
+     * @param n
+     * @return
+     */
     public List<String> generateParenthesis2(int n) {
         List<String> ans = new ArrayList();
         int d = 2 * n, l = 2 << (d - 1);
@@ -88,6 +93,11 @@ public class Solution {
         public int left = 0, unmatching = 0;
     }
 
+    /**
+     * 3 无重复字符的最长子串
+     * @param s
+     * @return
+     */
     public int lengthOfLongestSubstring(String s) {
         int begin = 0, end = 0, len = s.length(), max = 1, maxT = 1;
         if (len == 0) {
@@ -112,8 +122,140 @@ public class Solution {
         return max;
     }
 
+    /**
+     * 4 寻找两个正序数组的中位数
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        double median = 0D;
+        int len1 = nums1.length,len2 = nums2.length, len = len1+len2;
+        int[] nums = new int[len];
+        int pointer1 = 0, pointer2 = 0;
+        for (int i = 0; i < len; i++) {
+            if (pointer1 >= len1) {
+                for (int j = pointer2; j < len2; j++) {
+                    nums[i] = nums2[j];
+                    i++;
+                }
+                break;
+            }
+            if (pointer2 >= len2) {
+                for (int j = pointer1; j < len1; j++) {
+                    nums[i] = nums1[j];
+                    i++;
+                }
+                break;
+            }
+            if (nums1[pointer1] < nums2[pointer2]) {
+                nums[i] = nums1[pointer1];
+                pointer1 ++;
+            } else {
+                nums[i] = nums2[pointer2];
+                pointer2 ++;
+            }
+        }
+        if (len % 2 == 0) {
+            median = ((double) (nums[len/2 - 1] + nums[len/2]))/2;
+        } else {
+            median = nums[len/2];
+        }
+        return median;
+    }
+
+    public double findMedianSortedArrays2(int[] nums1, int[] nums2) {
+        double median = 0D;
+        int len1 = nums1.length,len2 = nums2.length, len = (len1+len2)/2 + 1, reaLen = len1 + len2;
+        int[] nums = new int[len];
+        int pointer1 = 0, pointer2 = 0;
+        for (int i = 0; i < len; i++) {
+            if (pointer1 >= len1) {
+                for (int j = pointer2; j < len2 && i < len; j++) {
+                    nums[i] = nums2[j];
+                    i++;
+                }
+                break;
+            }
+            if (pointer2 >= len2) {
+                for (int j = pointer1; j < len1 && i < len; j++) {
+                    nums[i] = nums1[j];
+                    i++;
+                }
+                break;
+            }
+            if (nums1[pointer1] < nums2[pointer2]) {
+                nums[i] = nums1[pointer1];
+                pointer1 ++;
+            } else {
+                nums[i] = nums2[pointer2];
+                pointer2 ++;
+            }
+        }
+        if (reaLen % 2 == 0) {
+            median = ((double) (nums[len - 1] + nums[len - 2]))/2;
+        } else {
+            median = nums[len - 1];
+        }
+        return median;
+    }
+
+    /**
+     * 5 最长回文子串 动归DP
+     * @param s
+     * @return
+     */
+    public String longestPalindrome(String s) {
+        // 边界 长度为1时 和 2 时，为1时 判断两侧， 为2时判断本身及两侧
+        int p1 = 1, p2 = 2;
+        String longestStr = "";
+        char[] chars = s.toCharArray();
+//        if (s.length() == 1) {
+//            longestStr = s.substring(0,1);
+//        } else if (s.length() == 2) {
+//            if (chars[0] == chars [1])
+//                longestStr = s.substring(0, 2);
+//            else
+//                longestStr = s.substring(0,1);
+//        }
+        if (s.length() > 0) {
+            longestStr = String.valueOf(chars[0]);
+        }
+        for (int i = 0, len = chars.length; i < len; i++) {
+            int border = Math.min(len - i - 1, i);
+            // 中心为1
+            for (int j = 1; j <= border; j++) {
+                if (chars[i-j] == chars[i+j]) {
+                    if (j*2+1 > longestStr.length()) {
+                        longestStr = s.substring(i - j, i + j + 1);
+                    }
+                } else {
+                    break;
+                }
+
+            }
+            // 中心为2
+            if ((i-1)>= 0 && chars[i] == chars[i-1]) {
+                if (longestStr.length() <= 1) {
+                    longestStr = s.substring(i-1,i+1);
+                }
+                border = Math.min(len - i - 1, i - 1);
+                for (int j = 1; j <= border; j++) {
+                    if (chars[i-j-1] == chars[i+j]) {
+                        if (j*2+2 > longestStr.length()) {
+                            longestStr = s.substring(i - j - 1, i + j + 1);
+                        }
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        return longestStr;
+    }
+
     public static void main(String[] args) {
-        System.out.println(new Solution().lengthOfLongestSubstring("abcabcbb"));
+        System.out.println(new Solution().longestPalindrome("sasddsa"));
     }
 
 }
