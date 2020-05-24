@@ -254,6 +254,16 @@ public class Solution {
         return longestStr;
     }
 
+    /**
+     * 6 Z字形变换
+     * @param s
+     * @param numRows
+     * @return
+     */
+    public String convert(String s, int numRows) {
+
+        return "";
+    }
     public static void main(String[] args) {
         System.out.println(new Solution().longestPalindrome("sasddsa"));
     }
