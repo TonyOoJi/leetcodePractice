@@ -261,11 +261,39 @@ public class Solution {
      * @return
      */
     public String convert(String s, int numRows) {
-
-        return "";
+        char[] sChars = s.toCharArray();
+        int slen = s.length(), x = slen/(numRows-1)+1, y = numRows;
+        char[][] chars = new char[x][y];
+        int sCharsPoint = 0;
+        for (int i = 0; i < x; i++) {
+            if (i%2==0) {
+                for (int j = 0; j < y; j++) {
+                    if (sCharsPoint >= slen) break;
+                    chars[i][j] = sChars[sCharsPoint];
+                    sCharsPoint++;
+                }
+            } else {
+                for (int j = y - 2; j > 0; j--) {
+                    if (sCharsPoint >= slen) break;
+                    chars[i][j] = sChars[sCharsPoint];
+                    sCharsPoint++;
+                }
+                chars[i][1] = ' ';
+                chars[i][y-1] = ' ';
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < y; i++) {
+            for (int j = 0; j < x; j++) {
+                if (chars[j][i] != ' ') {
+                    sb.append(chars[j][i]);
+                }
+            }
+        }
+        return sb.toString();
     }
     public static void main(String[] args) {
-        System.out.println(new Solution().longestPalindrome("sasddsa"));
+        System.out.println(new Solution().convert("LEETCODEISHIRING", 4));
     }
 
 }
