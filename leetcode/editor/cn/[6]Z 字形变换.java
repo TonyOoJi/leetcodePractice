@@ -35,12 +35,19 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public String convert(String s, int numRows) {
+        // 小于1的直接返回
+        if (numRows <= 1) {
+            return s;
+        }
+        // 字符数组
         char[] sChars = s.toCharArray();
-        int slen = s.length(), x = slen/(numRows-1)+1, y = numRows;
+        // 字符串长度、二维数组的大小x：横向 y：纵向
+        int slen = s.length(), x = slen / (numRows - 1) + 1, y = numRows;
         char[][] chars = new char[x][y];
         int sCharsPoint = 0;
+        // 放入二维数组 倾斜的列两头默认为 char 0 NUL
         for (int i = 0; i < x; i++) {
-            if (i%2==0) {
+            if (i % 2 == 0) {
                 for (int j = 0; j < y; j++) {
                     if (sCharsPoint >= slen) break;
                     chars[i][j] = sChars[sCharsPoint];
@@ -52,14 +59,13 @@ class Solution {
                     chars[i][j] = sChars[sCharsPoint];
                     sCharsPoint++;
                 }
-                chars[i][1] = '$';
-                chars[i][y-1] = '$';
             }
         }
+        // 横向读取
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < y; i++) {
             for (int j = 0; j < x; j++) {
-                if (chars[j][i] != '$') {
+                if (chars[j][i] != 0) {
                     sb.append(chars[j][i]);
                 }
             }

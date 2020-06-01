@@ -42,6 +42,7 @@ public class Solution {
 
     /**
      * 22 括号生成
+     *
      * @param n
      * @return
      */
@@ -95,6 +96,7 @@ public class Solution {
 
     /**
      * 3 无重复字符的最长子串
+     *
      * @param s
      * @return
      */
@@ -107,11 +109,11 @@ public class Solution {
             String window = s.substring(begin, end + 1);
             int contain = window.indexOf(s.charAt(end + 1));
             if (contain < 0) {
-                end ++;
-                maxT ++;
+                end++;
+                maxT++;
             } else {
-                begin =begin + contain + 1;
-                end ++;
+                begin = begin + contain + 1;
+                end++;
                 maxT = end - begin + 1;
             }
             if (maxT > max) {
@@ -124,13 +126,14 @@ public class Solution {
 
     /**
      * 4 寻找两个正序数组的中位数
+     *
      * @param nums1
      * @param nums2
      * @return
      */
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
         double median = 0D;
-        int len1 = nums1.length,len2 = nums2.length, len = len1+len2;
+        int len1 = nums1.length, len2 = nums2.length, len = len1 + len2;
         int[] nums = new int[len];
         int pointer1 = 0, pointer2 = 0;
         for (int i = 0; i < len; i++) {
@@ -150,23 +153,23 @@ public class Solution {
             }
             if (nums1[pointer1] < nums2[pointer2]) {
                 nums[i] = nums1[pointer1];
-                pointer1 ++;
+                pointer1++;
             } else {
                 nums[i] = nums2[pointer2];
-                pointer2 ++;
+                pointer2++;
             }
         }
         if (len % 2 == 0) {
-            median = ((double) (nums[len/2 - 1] + nums[len/2]))/2;
+            median = ((double) (nums[len / 2 - 1] + nums[len / 2])) / 2;
         } else {
-            median = nums[len/2];
+            median = nums[len / 2];
         }
         return median;
     }
 
     public double findMedianSortedArrays2(int[] nums1, int[] nums2) {
         double median = 0D;
-        int len1 = nums1.length,len2 = nums2.length, len = (len1+len2)/2 + 1, reaLen = len1 + len2;
+        int len1 = nums1.length, len2 = nums2.length, len = (len1 + len2) / 2 + 1, reaLen = len1 + len2;
         int[] nums = new int[len];
         int pointer1 = 0, pointer2 = 0;
         for (int i = 0; i < len; i++) {
@@ -186,14 +189,14 @@ public class Solution {
             }
             if (nums1[pointer1] < nums2[pointer2]) {
                 nums[i] = nums1[pointer1];
-                pointer1 ++;
+                pointer1++;
             } else {
                 nums[i] = nums2[pointer2];
-                pointer2 ++;
+                pointer2++;
             }
         }
         if (reaLen % 2 == 0) {
-            median = ((double) (nums[len - 1] + nums[len - 2]))/2;
+            median = ((double) (nums[len - 1] + nums[len - 2])) / 2;
         } else {
             median = nums[len - 1];
         }
@@ -202,6 +205,7 @@ public class Solution {
 
     /**
      * 5 最长回文子串 动归DP
+     *
      * @param s
      * @return
      */
@@ -225,8 +229,8 @@ public class Solution {
             int border = Math.min(len - i - 1, i);
             // 中心为1
             for (int j = 1; j <= border; j++) {
-                if (chars[i-j] == chars[i+j]) {
-                    if (j*2+1 > longestStr.length()) {
+                if (chars[i - j] == chars[i + j]) {
+                    if (j * 2 + 1 > longestStr.length()) {
                         longestStr = s.substring(i - j, i + j + 1);
                     }
                 } else {
@@ -235,14 +239,14 @@ public class Solution {
 
             }
             // 中心为2
-            if ((i-1)>= 0 && chars[i] == chars[i-1]) {
+            if ((i - 1) >= 0 && chars[i] == chars[i - 1]) {
                 if (longestStr.length() <= 1) {
-                    longestStr = s.substring(i-1,i+1);
+                    longestStr = s.substring(i - 1, i + 1);
                 }
                 border = Math.min(len - i - 1, i - 1);
                 for (int j = 1; j <= border; j++) {
-                    if (chars[i-j-1] == chars[i+j]) {
-                        if (j*2+2 > longestStr.length()) {
+                    if (chars[i - j - 1] == chars[i + j]) {
+                        if (j * 2 + 2 > longestStr.length()) {
                             longestStr = s.substring(i - j - 1, i + j + 1);
                         }
                     } else {
@@ -256,17 +260,26 @@ public class Solution {
 
     /**
      * 6 Z字形变换
+     * Z字形压缩为二维数组，N字的倾斜列可看做两头分别少一个的一列
+     *
      * @param s
      * @param numRows
      * @return
      */
     public String convert(String s, int numRows) {
+        // 小于1的直接返回
+        if (numRows <= 1) {
+            return s;
+        }
+        // 字符数组
         char[] sChars = s.toCharArray();
-        int slen = s.length(), x = slen/(numRows-1)+1, y = numRows;
+        // 字符串长度、二维数组的大小x：横向 y：纵向
+        int slen = s.length(), x = slen / (numRows - 1) + 1, y = numRows;
         char[][] chars = new char[x][y];
         int sCharsPoint = 0;
+        // 放入二维数组 倾斜的列两头默认为 char 0 NUL
         for (int i = 0; i < x; i++) {
-            if (i%2==0) {
+            if (i % 2 == 0) {
                 for (int j = 0; j < y; j++) {
                     if (sCharsPoint >= slen) break;
                     chars[i][j] = sChars[sCharsPoint];
@@ -278,20 +291,20 @@ public class Solution {
                     chars[i][j] = sChars[sCharsPoint];
                     sCharsPoint++;
                 }
-                chars[i][1] = ' ';
-                chars[i][y-1] = ' ';
             }
         }
+        // 横向读取
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < y; i++) {
             for (int j = 0; j < x; j++) {
-                if (chars[j][i] != ' ') {
+                if (chars[j][i] != 0) {
                     sb.append(chars[j][i]);
                 }
             }
         }
         return sb.toString();
     }
+
     public static void main(String[] args) {
         System.out.println(new Solution().convert("LEETCODEISHIRING", 4));
     }
