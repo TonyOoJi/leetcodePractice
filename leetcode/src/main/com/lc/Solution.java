@@ -266,7 +266,7 @@ public class Solution {
      * @param numRows
      * @return
      */
-    public String convert(String s, int numRows) {
+    public String convert2(String s, int numRows) {
         // 小于1的直接返回
         if (numRows <= 1) {
             return s;
@@ -281,13 +281,17 @@ public class Solution {
         for (int i = 0; i < x; i++) {
             if (i % 2 == 0) {
                 for (int j = 0; j < y; j++) {
-                    if (sCharsPoint >= slen) break;
+                    if (sCharsPoint >= slen) {
+                        break;
+                    }
                     chars[i][j] = sChars[sCharsPoint];
                     sCharsPoint++;
                 }
             } else {
                 for (int j = y - 2; j > 0; j--) {
-                    if (sCharsPoint >= slen) break;
+                    if (sCharsPoint >= slen) {
+                        break;
+                    }
                     chars[i][j] = sChars[sCharsPoint];
                     sCharsPoint++;
                 }
@@ -305,8 +309,79 @@ public class Solution {
         return sb.toString();
     }
 
+    public String convert(String s, int numRows) {
+
+        if (numRows == 1) {
+            return s;
+        }
+
+        List<StringBuilder> rows = new ArrayList<>();
+        for (int i = 0; i < Math.min(numRows, s.length()); i++) {
+            rows.add(new StringBuilder());
+        }
+
+        int curRow = 0;
+        boolean goingDown = false;
+
+        for (char c : s.toCharArray()) {
+            rows.get(curRow).append(c);
+            if (curRow == 0 || curRow == numRows - 1) {
+                goingDown = !goingDown;
+            }
+            curRow += goingDown ? 1 : -1;
+        }
+
+        StringBuilder ret = new StringBuilder();
+        for (StringBuilder row : rows) {
+            ret.append(row);
+        }
+        return ret.toString();
+    }
+
+    /**
+     * 8 字符串转换整数
+     *
+     * @param str
+     * @return
+     */
+    public int myAtoi(String str) {
+        int res = 0;
+        boolean negative = false,flag = false;
+        for (int i = 0, len = str.length(); i < len; i++) {
+            char ch = str.charAt(i);
+            if (!flag && (ch == '-' || ch == '+')) {
+                flag = true;
+                if (ch == '-') {
+                    negative = true;
+                    continue;
+                } else {
+                    if (ch == '+') {
+                        continue;
+                    }
+                }
+            }
+            if (ch >= 48 && ch <= 57) {
+                if (!negative) {
+                    if (res > Integer.MAX_VALUE / 10 || (res == Integer.MAX_VALUE / 10 && ch > (48 + 7))) {
+                        return Integer.MAX_VALUE;
+                    }
+                } else {
+                    if (res > Integer.MAX_VALUE / 10 || (res == Integer.MAX_VALUE / 10 && ch > (48 + 8))) {
+                        return Integer.MIN_VALUE;
+                    }
+                }
+                res = res * 10 + ch - 48;
+                flag = true;
+            } else {
+                if (flag || ch != ' ')
+                break;
+            }
+        }
+        return negative ? -res : res;
+    }
+
     public static void main(String[] args) {
-        System.out.println(new Solution().convert("LEETCODEISHIRING", 4));
+        System.out.println(new Solution().myAtoi(" aa-42"));
     }
 
 }
