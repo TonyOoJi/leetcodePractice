@@ -62,8 +62,8 @@
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-    // 普通解法
-    public int myAtoi2(String str) {
+    // 普通解法 速度更快
+    public int myAtoi(String str) {
         int res = 0;
         boolean negative = false,flag = false;
         for (int i = 0, len = str.length(); i < len; i++) {
@@ -99,26 +99,35 @@ class Solution {
         return negative ? -res : res;
     }
     // DFA 有限状态机
-    public int myAtoi(String str) {
-        Automaton automaton;
-        for (char c : str)
+    public int myAtoi2(String str) {
+        Automaton automaton = new Automaton();
+        for (char c : str.toCharArray()) {
             automaton.get(c);
-        return automaton.sign * automaton.ans;
+        }
+        return (int) (automaton.sign * automaton.ans);
     }
 
     class Automaton {
-        public string state = "start";
-        public Map<string, String[]> table = {
-                {"start", {"start", "signed", "in_number", "end"}},
-                {"signed", {"end", "end", "in_number", "end"}},
-                {"in_number", {"end", "end", "in_number", "end"}},
-                {"end", {"end", "end", "end", "end"}}
+        public String state = "start";
+        public Map<String, String[]> table = new HashMap<String, String[]>(){
+            {
+                put("start",new String[]{"start", "signed", "in_number", "end"});
+                put("signed",new String[]{"end", "end", "in_number", "end"});
+                put("in_number",new String[]{"end", "end", "in_number", "end"});
+                put("end",new String[]{"end", "end", "end", "end"});
+            }
         };
 
-        int get_col(char c) {
-            if (isspace(c)) return 0;
-            if (c == '+' or c == '-') return 1;
-            if (isdigit(c)) return 2;
+        int getCol(char c) {
+            if (Character.isWhitespace(c)) {
+                return 0;
+            }
+            if (c == '+' || c == '-') {
+                return 1;
+            }
+            if (Character.isDigit(c)) {
+                return 2;
+            }
             return 3;
         }
 
@@ -126,16 +135,16 @@ class Solution {
         public long ans = 0;
 
         public void get(char c) {
-            state = table.get(state)[get_col(c)];
+            state = table.get(state)[getCol(c)];
             if (state == "in_number") {
                 ans = ans * 10 + c - '0';
-                ans = sign == 1 ? min(ans, (long long)INT_MAX) : min(ans, -(long long)INT_MIN);
+                ans = sign == 1 ? Math.min(ans, (long)Integer.MAX_VALUE) : Math.min(ans, -(long)Integer.MIN_VALUE);
             }
-            else if (state == "signed")
+            else if (state == "signed") {
                 sign = c == '+' ? 1 : -1;
+            }
         }
     }
-
 
 }
 //leetcode submit region end(Prohibit modification and deletion)

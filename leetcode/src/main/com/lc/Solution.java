@@ -3,7 +3,9 @@ package com.lc;
 import com.sun.xml.internal.ws.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 文件描述
@@ -344,9 +346,9 @@ public class Solution {
      * @param str
      * @return
      */
-    public int myAtoi(String str) {
+    public int myAtoi2(String str) {
         int res = 0;
-        boolean negative = false,flag = false;
+        boolean negative = false, flag = false;
         for (int i = 0, len = str.length(); i < len; i++) {
             char ch = str.charAt(i);
             if (!flag && (ch == '-' || ch == '+')) {
@@ -374,14 +376,89 @@ public class Solution {
                 flag = true;
             } else {
                 if (flag || ch != ' ')
-                break;
+                    break;
             }
         }
         return negative ? -res : res;
     }
 
+    /**
+     * DFA自动机
+     *
+     * @param str
+     * @return
+     */
+    public int myAtoi(String str) {
+        Automaton automaton = new Automaton();
+        for (char c : str.toCharArray()) {
+            automaton.get(c);
+        }
+        return (int) (automaton.sign * automaton.ans);
+    }
+
+    class Automaton {
+        public String state = "start";
+        public Map<String, String[]> table = new HashMap<String, String[]>() {
+            {
+                put("start", new String[]{"start", "signed", "in_number", "end"});
+                put("signed", new String[]{"end", "end", "in_number", "end"});
+                put("in_number", new String[]{"end", "end", "in_number", "end"});
+                put("end", new String[]{"end", "end", "end", "end"});
+            }
+        };
+
+        int getCol(char c) {
+            if (Character.isWhitespace(c)) {
+                return 0;
+            }
+            if (c == '+' || c == '-') {
+                return 1;
+            }
+            if (Character.isDigit(c)) {
+                return 2;
+            }
+            return 3;
+        }
+
+        public int sign = 1;
+        public long ans = 0;
+
+        public void get(char c) {
+            state = table.get(state)[getCol(c)];
+            if (state == "in_number") {
+                ans = ans * 10 + c - '0';
+                ans = sign == 1 ? Math.min(ans, (long) Integer.MAX_VALUE) : Math.min(ans, -(long) Integer.MIN_VALUE);
+            } else if (state == "signed") {
+                sign = c == '+' ? 1 : -1;
+            }
+        }
+    }
+
+    /**
+     * 9 回文数
+     *
+     * @param x
+     * @return
+     */
+    public boolean isPalindrome(int x) {
+        if (x < 0) {
+            return false;
+        }
+        int reverse = 0, rightNum, xT = x;
+        while (x != 0) {
+            rightNum = x%10;
+            x /= 10;
+            reverse = reverse * 10 + rightNum;
+        }
+        if (reverse == xT) {
+            return true;
+        } else {
+            return  false;
+        }
+    }
+
     public static void main(String[] args) {
-        System.out.println(new Solution().myAtoi(" aa-42"));
+        System.out.println(new Solution().isPalindrome(242));
     }
 
 }
