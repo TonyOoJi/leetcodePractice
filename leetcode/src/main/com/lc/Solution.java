@@ -1,11 +1,10 @@
 package com.lc;
 
+import com.sun.deploy.util.ArrayUtil;
 import com.sun.xml.internal.ws.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Array;
+import java.util.*;
 
 /**
  * 文件描述
@@ -457,8 +456,128 @@ public class Solution {
         }
     }
 
+    /**
+     * 11 盛最多水的容器
+     *
+     * @param height
+     * @return
+     */
+    public int maxArea(int[] height) {
+        int len = height.length - 1, lp = 0, rp = len;
+        int area = 0, currArea, currHei;
+        while (lp != rp) {
+            currHei = height[lp] > height[rp] ? height[rp] : height[lp];
+            currArea = currHei * (rp - lp);
+            area = area > currArea ? area : currArea;
+            if (height[lp] > height[rp]) {
+                rp--;
+            } else {
+                lp++;
+            }
+        }
+        return area;
+    }
+
+    /**
+     * 11 转罗马数字
+     * @param num
+     * @return
+     */
+    public String intToRoman(int num) {
+        int[] values = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+        String[] symbols = {"M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"};
+        StringBuilder sb = new StringBuilder();
+        // Loop through each symbol, stopping if num becomes 0.
+        for (int i = 0; i < values.length && num >= 0; i++) {
+            // Repeat while the current symbol still fits into num.
+            while (values[i] <= num) {
+                num -= values[i];
+                sb.append(symbols[i]);
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 14 最长公共前缀
+     * @param strs
+     * @return
+     */
+    public String longestCommonPrefix(String[] strs) {
+        StringBuilder sb = new StringBuilder();
+        int prePoint = 0;
+        char currChar = ' ';
+        if (strs.length == 0) {
+            return "";
+        }
+        while (true) {
+            for (int i = 0, len = strs.length; i < len; i++) {
+                if (prePoint > strs[i].length() - 1) {
+                    return sb.toString();
+                }
+                currChar = strs[0].charAt(prePoint);
+                if (strs[i].charAt(prePoint) != currChar) {
+                    return sb.toString();
+                }
+            }
+            sb.append(currChar);
+            prePoint++;
+        }
+    }
+
+    /**
+     * 15三数之和
+     * @param nums
+     * @return
+     */
+    public List<List<Integer>> threeSum(int[] nums) {
+        // 排序，保证后面的大于前面的并且第一个整数也是递增
+        List<List<Integer>> sums = new ArrayList<List<Integer>>();
+        if (nums.length <= 2) {
+            return sums;
+        }
+        Arrays.sort(nums);
+        int len = nums.length, pointer0 = 0;
+        for (int i = 0; i < len - 1; i++) {
+            if (nums[i] < 0 && nums[i+1] >= 0) {
+                pointer0 = i + 2;
+            }
+        }
+        if (pointer0 == 0) {
+            pointer0 = len/2;
+        }
+        // 第一个数
+        int a1 = nums[0],a2 = nums[1];
+        for (int i = 0; i < pointer0; i++) {
+            // 相同时跳过
+            if (nums[i] == a1 && i != 0) {
+                continue;
+            }
+            a1 = nums[i];
+            for (int j = i + 1; j < len - 1; j++) {
+                // 相同时跳过
+                if (nums[j] == a2 && j != 1) {
+                    continue;
+                }
+                a2 = nums[j];
+                int index = pointer0 > j + 1 ? pointer0 : j + 1;
+                for (int k = index; k < len; k++) {
+                    if ((nums[i] + nums[j] + nums[k]) == 0) {
+                        List<Integer> threeSum = new ArrayList<Integer>();
+                        threeSum.add(nums[i]);
+                        threeSum.add(nums[j]);
+                        threeSum.add(nums[k]);
+                        sums.add(threeSum);
+                        break;
+                    }
+                }
+            }
+        }
+        return sums;
+    }
+
     public static void main(String[] args) {
-        System.out.println(new Solution().isPalindrome(242));
+        System.out.println(new Solution().threeSum(new int[]{-4,-2,1,-5,-4,-4,4,-2,0,4,0,-2,3,1,-5,0}));
     }
 
 }
