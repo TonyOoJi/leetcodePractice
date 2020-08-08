@@ -22,30 +22,36 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
-        /*// 排序，保证后面的大于前面的并且第一个整数也是递增
+        // 排序，保证后面的大于前面的并且第一个整数也是递增
+        Arrays.sort(nums);
         List<List<Integer>> sums = new ArrayList<List<Integer>>();
-        if (nums.length <= 2) {
+        if (nums == null || nums.length <= 2) {
             return sums;
         }
-        Arrays.sort(nums);
         int len = nums.length;
         // 第一个数
-        int a1 = nums[0],a2 = nums[1];
-        for (int i = 0; i < len - 2; i++) {
+        int a2 =  nums[0];
+        for (int i = 0; i < len; i++) {
+            // 第一个数字大于0 结束
+            if (i != 0 && nums[i] > 0) {
+                break;
+            }
             // 相同时跳过
-            if (nums[i] == a1 && i != 0) {
+            if (i != 0 && nums[i] == nums[i-1]) {
                 continue;
             }
-            a1 = nums[i];
+            // 第二个数字
             for (int j = i + 1; j < len - 1; j++) {
                 // 相同时跳过
-                if (nums[j] == a2 && j != 1) {
+                if (j != 1 && nums[j] == a2) {
                     continue;
                 }
                 a2 = nums[j];
-                for (int k = j + 1; k < len; k++) {
-                    if ((nums[i] + nums[j] + nums[k]) == 0) {
-                        List<Integer> threeSum = new ArrayList<Integer>();
+                int sum = 0;
+                for (int k = len - 1; k > j; k--) {
+                    sum = nums[i] + nums[j] + nums[k];
+                    if (sum == 0) {
+                        List<Integer> threeSum = new ArrayList<>();
                         threeSum.add(nums[i]);
                         threeSum.add(nums[j]);
                         threeSum.add(nums[k]);
@@ -53,19 +59,23 @@ class Solution {
                         break;
                     }
                 }
+                // 当三层循环结束 和大于0则第二次不用再执行
+                if (sum > 0) {
+                    break;
+                }
             }
         }
-        return sums;*/
+        return sums;
         /*// 排序，保证后面的大于前面的并且第一个整数也是递增
         List<List<Integer>> sums = new ArrayList<List<Integer>>();
-        if (nums.length <= 2) {
+        if (nums == null || nums.length <= 2) {
             return sums;
         }
         Arrays.sort(nums);
         int len = nums.length, pointer0 = 0;
         for (int i = 0; i < len - 1; i++) {
             if (nums[i] < 0 && nums[i+1] >= 0) {
-                pointer0 = i + 1;
+                pointer0 = i + 2;
             }
         }
         if (pointer0 == 0) {
@@ -85,8 +95,8 @@ class Solution {
                     continue;
                 }
                 a2 = nums[j];
-                int index = pointer0 > j + 1 ? pointer0 : j + 1;
-                for (int k = index; k < len; k++) {
+                int index = pointer0 > j + 1 ? pointer0 - 2 : j + 1;
+                for (int k = len - 1; k > j; k--) {
                     if ((nums[i] + nums[j] + nums[k]) == 0) {
                         List<Integer> threeSum = new ArrayList<Integer>();
                         threeSum.add(nums[i]);
@@ -99,7 +109,7 @@ class Solution {
             }
         }
         return sums;*/
-        int n = nums.length;
+        /*int n = nums.length;
         Arrays.sort(nums);
         List<List<Integer>> ans = new ArrayList<List<Integer>>();
         // 枚举 a
@@ -135,7 +145,7 @@ class Solution {
                 }
             }
         }
-        return ans;
+        return ans;*/
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
