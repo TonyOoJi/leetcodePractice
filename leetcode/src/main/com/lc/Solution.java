@@ -555,6 +555,9 @@ public class Solution {
                 if (j != 1 && nums[j] == a2) {
                     continue;
                 }
+                if (nums[i] + nums[j] > 1) {
+                    break;
+                }
                 a2 = nums[j];
                 int sum = 0;
                 for (int k = len - 1; k > j; k--) {
@@ -579,7 +582,7 @@ public class Solution {
 
     public static void main(String[] args) {
 //        System.out.println(new Solution().threeSum(new int[]{6,-5,-6,-1,-2,8,-1,4,-10,-8,-10,-2,-4,-1,-8,-2,8,9,-5,-2,-8,-9,-3,-5}));
-        System.out.println(new Solution().threeSum(new int[]{-1,0,1,2,-1,-4}));
+        System.out.println(new Solution().threeSum(new int[]{3,0,3,2,-4,0,-3,2,2,0,-1,-5}));
     }
 
 }

@@ -46,6 +46,9 @@ class Solution {
                 if (j != 1 && nums[j] == a2) {
                     continue;
                 }
+                if (nums[i] + nums[j] > 1) {
+                    break;
+                }
                 a2 = nums[j];
                 int sum = 0;
                 for (int k = len - 1; k > j; k--) {
