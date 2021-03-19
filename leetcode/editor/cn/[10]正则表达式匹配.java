@@ -60,8 +60,15 @@
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
+    /**
+     * 思路：动态规划匹配
+     *
+     * @param s
+     * @param p
+     * @return
+     */
     public boolean isMatch(String s, String p) {
-
+        return s.matches(p);
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

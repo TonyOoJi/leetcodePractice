@@ -18,6 +18,16 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public List<String> letterCombinations(String digits) {
+        Map<Character, String> phoneMap = new HashMap<Character, String>() {{
+            put('2', "abc");
+            put('3', "def");
+            put('4', "ghi");
+            put('5', "jkl");
+            put('6', "mno");
+            put('7', "pqrs");
+            put('8', "tuv");
+            put('9', "wxyz");
+        }};
 
     }
 }
